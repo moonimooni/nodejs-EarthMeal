@@ -1,0 +1,49 @@
+<%- include('../includes/head.ejs') %>
+  <link rel="stylesheet" href="/css/card.css">
+  <style>
+    .no_product {
+      max-width: 90%;
+      margin: auto;
+      margin-top: 100px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../includes/nav.ejs') %>
+  <main>
+    <% if (products.length > 0) { %>
+      <div class="grid">
+        <% for (let product of products) { %>
+          <article class="card product">
+            <div class="card__img">
+              <a href="/product-detail/<%= product.id %>">
+                <img src="<%= product.imgUrl %>" alt="<%= product.name %>" />
+              </a>
+            </div>
+            <div class="card__content">
+              <a href="/product-detail/<%= product.id %>">
+                <h1 class="product__title">
+                  <%= product.name %>
+                </h1>
+              </a>
+              <h3 class="product__price">
+                <%= product.price %>원
+              </h3>
+              <p class="product__description">
+                <%= product.description %>
+              </p>
+            </div>
+            <div class="card__action">
+              <form action="/cart" method="POST">
+                <button class="btn" type="submit">장바구니 담기</button>
+                <input type="hidden" name="productID" value="<%= product.id %>">
+              </form>
+            </div>
+          </article>
+        <% } %>
+      </div>
+    <% } else { %>
+      <h1 class="no_product">상품이 없습니다!</h1>
+    <% } %>
+<%- include('../includes/end.ejs') %>

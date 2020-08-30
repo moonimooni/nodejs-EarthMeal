@@ -1,0 +1,75 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body>
+  <%- include('../includes/nav.ejs') %>
+  <main>
+    <section id="cart_intro">
+      <h1 class="cart_title">나의 장바구니</h1>
+      <p>주문하실 상품의 수량과 종류를 확인해 주세요.</p>
+    </section>
+    <section id="cart">
+      <% if (products.length > 0) { %>
+      <table>
+        <thead>
+          <tr class="head_row">
+            <th class="th_select">
+              <div class="select_all">
+                <label class="label_check">
+                  <input type="checkbox" name="allClick" class="checkbox" checked/>
+                </label>
+              </div>
+            </th>
+            <th>
+              <div class="th_title">
+                전체선택
+                <span class="total_num"><%= products.length %>/<%= products.length %></span>
+              </div>
+            </th>
+            <th>상품정보</th>
+            <th>수량</th>
+            <th>상품금액</th>
+            <th class="th_delete"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (productObj of products) { %>
+          <tr class="product_row">
+            <td class="product_check">
+              <label class="label_check">
+                <input type="checkbox" name="allClick" class="checkbox" checked/>
+              </label>
+            </td>
+            <td class="product_img_wrapper">
+              <img class="product_img" src="<%= productObj.product.imgUrl %>" alt="<%= productObj.product.id %>">
+            </td>
+            <td>
+              <span>상품번호: <%= productObj.product.id %></span>
+              <span><%= productObj.product.name %></span>
+              <span>개당 <%= productObj.product.price %></span>
+            </td>
+            <td>
+              <form action="" method="POST" class="product_qty">
+                <input type="number" name="productQty" value="<%= productObj.qty %>" class="product_qty__input" />
+              </form>
+            </td>
+            <td><%= productObj.product.price * productObj.qty %></td>
+            <td>
+              <form action="/cart/product-delete" method="POST" class="product_delete">
+                <input type="hidden" value="<%= productObj.product.id %>" name="productID">
+                <button type="submit" class="btn_delete">
+                  <img src="https://www.emoji.co.uk/files/phantom-open-emojis/symbols-phantom/13107-heavy-multiplication-x.png" alt="삭제" class="delete_img">
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <% } else { %>
+        <h1>장바구니가 비어 있어요!</h1>
+      <% } %>
+    </section>
+  </main>
+  <%- include('../includes/end.ejs') %>

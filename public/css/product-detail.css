@@ -1,0 +1,159 @@
+#content {
+  margin: 30px auto;
+  max-width: 1050px;
+}
+
+.content__section {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.content__info {
+  width: 460px;
+}
+
+.content__name{
+  font-size: 24px;
+  font-weight: 500;
+  margin: 10px 0 0px 0px;
+}
+
+.content__reception {
+  display: flex;
+}
+
+.content__reviews {
+  margin-left: 20px;
+}
+
+.content__description {
+  margin: 0 0 20px 0;
+}
+
+.content__dc {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #dc7900;
+}
+
+.content__dc_price {
+  font-size: 32px;
+  font-weight: 600;
+  color: #318000;
+  margin-right: 20px;
+}
+
+.won {
+  font-size: 16px;
+}
+
+.content__real_price {
+  font-size: 22px;
+  color: #cdccc7;
+  text-decoration: line-through;
+}
+
+.content__detail {
+  margin-top: 40px;
+}
+
+.content__detail_list {
+  margin-bottom: 40px;
+}
+
+dl {
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+dt {
+  width: 100px;
+  margin-right: 100px;
+}
+
+.content__price {
+  display: flex;
+  flex-direction: column;
+}
+
+.content__img {
+  margin-left: -40px;
+}
+
+.content__img img {
+  width: 400px;
+}
+
+.content__additional_img {
+  background-color: #e6e5e0;
+  width: 120px;
+}
+
+.content__order {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order_howmany {
+  height: 40px;
+  font-size: 18px;
+  width: 130px;
+  margin-right: 6px;
+  padding-left: 10px;
+  border-radius: 10px;
+  border: .5px solid #dcdcdc;
+}
+
+.content__order_type {
+  margin-left: 24px;
+  display: flex;
+}
+
+.order_style {
+  height: 40px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.order_post + .order_post {
+  margin-left: 10px;
+}
+
+.order_now {
+  background-color: #318000;
+  color: white;
+}
+
+.order_cart:hover {
+  background-color: #dcdcdc;
+}
+
+.order_now:hover {
+  background-color: #f59015;
+}
+
+ul {
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+
+.recommend {
+  border: 1px solid #e6e5e0;
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.prod_info {
+  margin: 0 auto;
+}

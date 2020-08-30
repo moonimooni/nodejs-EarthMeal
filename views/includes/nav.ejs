@@ -1,0 +1,90 @@
+<div class="backdrop"></div>
+<header>
+  <button id="side-menu-toggle">
+    <img class="menu_toggle_ico" src="/img/ico/toggle_menu.png" alt="">
+  </button>
+  <div id="banner">
+    <div class="banner__user">
+      <ul class="banner__user_menu">
+        <li class="user__link user__join">
+          <a href="#">회원가입</a>
+        </li>
+        <li class="user__link user__login">
+          <a href="#">로그인</a>
+        </li>
+      </ul>
+    </div>
+    <div class="banner__logo">
+      <h1 class="logo">
+        <a href="/">
+          <img class="logo__img" src="/img/main.jpeg" alt="어스밀 로고">
+        </a>
+      </h1>
+    </div>
+  </div>
+  <nav class="gnb">
+    <ul class="gnb__dir">
+      <li class="dir__list">
+        <a class="<%= path === '/' ? 'active' : '' %>" href="/">
+          홈
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">
+          전체 상품
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">
+          내 장바구니
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">
+          주문 현황
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/admin/product-add' ? 'active' : '' %>" href="/admin/product-add">
+          상품 등록
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">
+          상품 관리
+        </a>
+      </li>
+    </ul>
+    <div class="gnb__side_search">
+      <form class="side_search" action="#">
+        <input type="text" label="검색어" class="search_text">
+        <input type="image" src="/img/ico/search.png" class="search_ico">
+      </form>
+    </div>
+  </nav>
+</header>
+
+<nav class="mobile-nav">
+  <ul class="mobile-nav__item-list">
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
+      </a>
+    </li>
+    <li class="mobile-nav__item">
+      <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
+      </a>
+    </li>
+  </ul>
+</nav>

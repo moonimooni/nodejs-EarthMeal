@@ -1,0 +1,13 @@
+#contents {
+  display: flex;
+  flex-direction: column;
+}
+
+#promo {
+  margin: 0 auto;
+}
+
+.promo__img {
+  width: 100%;
+  min-width: 1050px;
+}
