@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { 
   getProductAdd, 
-  postProduct, 
+  postAndUpdateProduct, 
   getProducts, 
   getProductEdit, 
   deleteProduct } = require('../controllers/admin');
@@ -11,9 +11,9 @@ const {
 
 router.get('/product-add', getProductAdd);
 router.get('/products', getProducts);
-router.post('/product-add', postProduct);
+router.post('/product-add', postAndUpdateProduct);
 router.get('/product-edit/:id', getProductEdit);
-router.post('/product-edit', postProduct);
+router.post('/product-edit', postAndUpdateProduct);
 router.post('/product-delete/:id', deleteProduct);
 
 module.exports = router;

@@ -1,8 +1,3 @@
-const fs = require('fs');
-const path = require('path');
-
-const rootDir = require('../util/path');
-const p = path.join(rootDir, 'data', 'products.json');
 const Product = require('../models/product');
 
 exports.getProductAdd = (req, res, next) => {
@@ -12,77 +7,58 @@ exports.getProductAdd = (req, res, next) => {
   });
 };
 
-exports.postProduct = (req, res, next) => {
+exports.postAndUpdateProduct = (req, res, next) => {
   const name = req.body.name;
   const imgUrl = req.body.imgUrl;
   const price = req.body.price;
   const description = req.body.description;
-  let id;
-  let product;
-  if (req.body.id) {
-    id = req.body.id;
-    product = new Product(id, name, imgUrl, price, description);
-  } else {
-    product = new Product(null, name, imgUrl, price, description);
-  }
-  product.save();
-  return res.redirect('/admin/products');
-};
 
-// exports.getProductEdit = (req, res, next) => {
-//   const ProductID = req.params.id;
-//   Product.fetchOne((ProductID), product => {
-//     return res.render('admin/product-edit', {
-//       product: product,
-//       docTitle: '어스밀',
-//       path: '/admin/product-add'
-//     });
-//   });
-// };
+  const product = new Product(name, imgUrl, price, description);
+
+  if (req.body.id) {
+    product.update(req.body.id)
+      .then(res.redirect('/admin/products'))
+      .catch(err => console.log(err));
+  } else {
+    product.post()
+    .then(res.redirect('/admin/products'))
+    .catch(err => console.log(err));
+  };
+};
 
 exports.getProductEdit = (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
-  }
-  const ProductID = req.params.id;
-  Product.fetchOne((ProductID), (product => {
-    return res.render('admin/product-edit', {
-      product: product,
-      docTitle: '어스밀',
-      path: '/admin/product-add',
-      editing: editMode
-    });
-  }));
+  };
+  const productID = req.params.id;
+  Product.fetchOne(productID)
+    .then(([product, fieldData]) => {
+      return res.render('admin/product-edit', {
+        product: product[0],
+        docTitle: '어스밀',
+        path: '/admin/product-add',
+        editing: editMode
+      });
+    })
+    .catch(err => console.log(err))
 };
 
 exports.deleteProduct = (req, res, next) => {
   const productID = req.params.id;
-  Product.deleteByID(productID);
-  return res.redirect('/admin/products');
-}
-
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    return res.render('admin/product-list', {
-      products: products,
-      docTitle: '어스밀',
-      path: '/admin/products'
-    });
-  });
+  Product.deleteByID(productID)
+    .then(res.redirect('/admin/products'))
+    .catch(err => console.log(err));
 };
 
-// exports.postProductDelete = (req, res, next) => {
-//   const productID = req.params.id;
-//   Product.fetchAll(products => {
-//     const selectedProductIndex = products.findIndex(prod => prod.id === productID);
-//     products.splice(selectedProductIndex, 1);
-//     fs.writeFile(
-//       p,
-//       JSON.stringify(products),
-//       (error) => console.log(error)
-//     );
-//     return res.redirect('/admin/products');
-//   });
-// };
-
+exports.getProducts = (req, res, next) => {
+  Product.fetchAll()
+    .then(([products, fieldData]) => {
+      return res.render('admin/product-list', {
+        products: products,
+        docTitle: '어스밀',
+        path: '/admin/products'
+      });
+    })
+    .catch(error => console.log(error));
+};

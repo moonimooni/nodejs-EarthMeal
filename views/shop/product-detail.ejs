@@ -36,13 +36,13 @@
               </p>
               <div class="content__dc_info">
                 <span class="content__dc_price">
-                  <%= product.price %>
+                  <%= Math.floor(product.price) %>
                   <span class="won">
                     원
                   </span>
                 </span>
                 <span class="content__real_price">
-                  <%= Math.ceil(product.price * 1.1) %>
+                  <%= Math.floor(product.price * 1.1) %>
                 </span>
               </div>
             </div>
@@ -69,7 +69,7 @@
             <div class="content__order">
               <input class="order_howmany" type="number" name="buy" placeholder="1" />
               <span class="qty">개</span>
-              <span class="total_price"><%= product.price %>원</span>
+              <span class="total_price"><%= Math.floor(product.price) %>원</span>
               <div class="content__order_type">
                 <form class="cart_post order_post" action="/cart" method="POST">
                   <input type="hidden" name="productID" value="<%= product.id %>">
