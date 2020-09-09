@@ -8,22 +8,41 @@ exports.getProductAdd = (req, res, next) => {
 };
 
 exports.postAndUpdateProduct = (req, res, next) => {
+  const id = req.body.id;
   const name = req.body.name;
   const imgUrl = req.body.imgUrl;
   const price = req.body.price;
   const description = req.body.description;
+  console.log(typeof req.user);
+  // const userId = req.user.id
 
-  const product = new Product(name, imgUrl, price, description);
-
-  if (req.body.id) {
-    product.update(req.body.id)
-      .then(res.redirect('/admin/products'))
-      .catch(err => console.log(err));
-  } else {
-    product.post()
+  Product.findByPk(id)
+    .then(product => {
+      product.name = name;
+      product.imgUrl = imgUrl;
+      product.price = price;
+      product.description = description;
+      product.userId = userId;
+      return product.save();
+    })
     .then(res.redirect('/admin/products'))
+    .catch(err => {
+      Product.create({
+        name: name,
+        imgUrl: imgUrl,
+        price: price,
+        description: description,
+        userId: userId
+      });
+      // req.user.createProduct({
+      //   name: name,
+      //   imgUrl: imgUrl,
+      //   price: price,
+      //   description: description,
+      // });
+      res.redirect('/admin/products');
+    })
     .catch(err => console.log(err));
-  };
 };
 
 exports.getProductEdit = (req, res, next) => {
@@ -32,28 +51,41 @@ exports.getProductEdit = (req, res, next) => {
     return res.redirect('/');
   };
   const productID = req.params.id;
-  Product.fetchOne(productID)
-    .then(([product, fieldData]) => {
+  Product.findByPk(productID)
+    .then(product => {
       return res.render('admin/product-edit', {
-        product: product[0],
+        product: product,
         docTitle: '어스밀',
         path: '/admin/product-add',
         editing: editMode
       });
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
 };
 
 exports.deleteProduct = (req, res, next) => {
   const productID = req.params.id;
-  Product.deleteByID(productID)
-    .then(res.redirect('/admin/products'))
+  Product.destroy({ where: { id: productID } })
+    .then(result => {
+      console.log('destroyed');
+      res.redirect('/admin/products');
+    })
     .catch(err => console.log(err));
+
+  //or codes below also work.
+  
+  // Product.findByPk(productID)
+  //   .then(product => product.destroy())
+  //   .then(result => {
+  //     console.log('destoryed');
+  //     res.redirect('/admin/products');
+  //   })
+  //   .catch(err => console.log(err));
 };
 
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([products, fieldData]) => {
+exports.getProductsList = (req, res, next) => {
+  Product.findAll()
+    .then(products => {
       return res.render('admin/product-list', {
         products: products,
         docTitle: '어스밀',
