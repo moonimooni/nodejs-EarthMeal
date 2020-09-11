@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('cart', {
+  return sequelize.define('order', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,

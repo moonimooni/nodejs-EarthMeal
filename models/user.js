@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define('product', {
+  return sequelize.define('user', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -10,15 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    imgUrl: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    price: {
-      type: Sequelize.DECIMAL(13, 2),
-      allowNull: false
-    },
-    description: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false
     }

@@ -1,12 +1,12 @@
 <%- include('../includes/head.ejs') %>
-<link rel="stylesheet" href="/css/cart.css">
+<link rel="stylesheet" href="/css/cart-and-order.css">
 </head>
 
 <body>
   <%- include('../includes/nav.ejs') %>
   <main>
     <section id="cart_intro">
-      <h1 class="cart_title">나의 장바구니</h1>
+      <h1 class="page_title cart_title">나의 장바구니</h1>
       <p>주문하실 상품의 수량과 종류를 확인해 주세요.</p>
     </section>
     <section id="cart">
@@ -42,22 +42,22 @@
               </label>
             </td>
             <td class="product_img_wrapper">
-              <img class="product_img" src="<%= productObj.product.imgUrl %>" alt="<%= productObj.product.id %>">
+              <img class="product_img" src="<%= productObj.imgUrl %>" alt="<%= productObj.id %>">
             </td>
             <td>
-              <span>상품번호: <%= productObj.product.id %></span>
-              <span><%= productObj.product.name %></span>
-              <span>개당 <%= productObj.product.price %></span>
+              <span>상품번호: <%= productObj.id %></span>
+              <span><%= productObj.name %></span>
+              <span>개당 <%= Math.floor(productObj.price) %></span>
             </td>
             <td>
               <form action="" method="POST" class="product_qty">
-                <input type="number" name="productQty" value="<%= productObj.qty %>" class="product_qty__input" />
+                <input type="number" name="productQty" value="<%= productObj.cartItem.quantity %>" class="product_qty__input" />
               </form>
             </td>
-            <td><%= productObj.product.price * productObj.qty %></td>
+            <td><%= Math.floor(productObj.price * productObj.cartItem.quantity) %></td>
             <td>
               <form action="/cart/product-delete" method="POST" class="product_delete">
-                <input type="hidden" value="<%= productObj.product.id %>" name="productID">
+                <input type="hidden" value="<%= productObj.id %>" name="productID">
                 <button type="submit" class="btn_delete">
                   <img src="https://www.emoji.co.uk/files/phantom-open-emojis/symbols-phantom/13107-heavy-multiplication-x.png" alt="삭제" class="delete_img">
                 </button>
@@ -67,9 +67,14 @@
           <% } %>
         </tbody>
       </table>
-      <% } else { %>
-        <h1>장바구니가 비어 있어요!</h1>
-      <% } %>
     </section>
+    <section id="cart_result">
+      <form action="/order-create" method="POST">
+        <button type="submit" class="btn_go_order">주문하기</button>
+      </form>
+    </section>
+    <% } else { %>
+      <h1>장바구니가 비어 있어요!</h1>
+    <% } %>
   </main>
   <%- include('../includes/end.ejs') %>

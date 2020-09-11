@@ -1,5 +1,50 @@
 <%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/cart-and-order.css">
 </head>
+
 <body>
   <%- include('../includes/nav.ejs') %>
-  <%- include('../includes/end.ejs') %> 
+  <main>
+    <section id="order_intro">
+      <h1 class="page_title order_title">주문서</h1>
+      <p>주문하실 상품의 수량과 종류를 확인해 주세요.</p>
+    </section>
+    <section id="order">
+      <% if (orders.length > 0) { %>
+      <% for (order of orders) { %>
+      <div class="order_id">
+        <span>주문번호</span>
+        <span><%= order.id %></span>
+      </div>
+      <table>
+        <thead>
+          <tr class="head_row">
+            <th>상품정보</th>
+            <th>상품금액</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (product of order.products) { %>
+          <tr class="product_row">
+            <td class="product_img_wrapper product_wrapper">
+              <img class="product_img" src="<%= product.imgUrl %>" alt="<%= product.id %>">
+              <div class="product_info">
+                <span>상품번호: <%= product.id %></span>
+                <span><%= product.name %></span>
+                <span>개당 <%= Math.floor(product.price) %></span>
+              </div>
+            </td>
+            <td>
+              <%= Math.floor(product.price * product.orderItem.quantity) %>
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <% } %>
+      <% } else { %>
+      <h1>주문 내역이 비어 있어요!</h1>
+      <% } %>
+    </section>
+  </main>
+  <%- include('../includes/end.ejs') %>
