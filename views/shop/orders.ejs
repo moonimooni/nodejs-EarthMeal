@@ -14,7 +14,7 @@
       <% for (order of orders) { %>
       <div class="order_id">
         <span>주문번호</span>
-        <span><%= order.id %></span>
+        <span><%= order._id %></span>
       </div>
       <table>
         <thead>
@@ -27,15 +27,15 @@
           <% for (product of order.products) { %>
           <tr class="product_row">
             <td class="product_img_wrapper product_wrapper">
-              <img class="product_img" src="<%= product.imgUrl %>" alt="<%= product.id %>">
+              <img class="product_img" src="<%= product.imgUrl %>" alt="<%= product._id %>">
               <div class="product_info">
-                <span>상품번호: <%= product.id %></span>
+                <span>상품번호: <%= product._id %></span>
                 <span><%= product.name %></span>
                 <span>개당 <%= Math.floor(product.price) %></span>
               </div>
             </td>
             <td>
-              <%= Math.floor(product.price * product.orderItem.quantity) %>
+              <%= Math.floor(product.price * product.qty) %>
             </td>
           </tr>
           <% } %>

@@ -72,7 +72,7 @@
               <span class="total_price"><%= Math.floor(product.price) %>원</span>
               <div class="content__order_type">
                 <form class="cart_post order_post" action="/cart" method="POST">
-                  <input type="hidden" name="productID" value="<%= product.id %>">
+                  <input type="hidden" name="productID" value="<%= product._id %>">
                   <button class="order_style order_cart" type="submit">
                     장바구니 담기
                   </button>

@@ -31,8 +31,8 @@
               </p>
             </div>
             <div class="card__action">
-              <a href="/admin/product-edit/<%= product.id %>?edit=true" class="btn btn_patch">수정</a>
-              <form action="/admin/product-delete/<%= product.id %>" method="POST">
+              <a href="/admin/product-edit/<%= product._id %>?edit=true" class="btn btn_patch">수정</a>
+              <form action="/admin/product-delete/<%= product._id %>" method="POST">
                 <button type="submit" class="btn btn_delete">
                   삭제
                 </button>

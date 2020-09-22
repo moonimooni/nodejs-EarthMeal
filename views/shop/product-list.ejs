@@ -17,12 +17,12 @@
         <% for (let product of products) { %>
           <article class="card product">
             <div class="card__img">
-              <a href="/product-detail/<%= product.id %>">
+              <a href="/product-detail/<%= product._id %>">
                 <img src="<%= product.imgUrl %>" alt="<%= product.name %>" />
               </a>
             </div>
             <div class="card__content">
-              <a href="/product-detail/<%= product.id %>">
+              <a href="/product-detail/<%= product._id %>">
                 <h1 class="product__title">
                   <%= product.name %>
                 </h1>
@@ -37,7 +37,7 @@
             <div class="card__action">
               <form action="/cart" method="POST">
                 <button class="btn" type="submit">장바구니 담기</button>
-                <input type="hidden" name="productID" value="<%= product.id %>">
+                <input type="hidden" name="productID" value="<%= product._id %>">
               </form>
             </div>
           </article>
