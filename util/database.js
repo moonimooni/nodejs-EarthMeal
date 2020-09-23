@@ -1,6 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
-const url = `mongodb+srv://moonimooni:UjaqBY9cQsXak37O@cluster0.9tapk.mongodb.net/shop?retryWrites=true&w=majority`;
+const url = ``;
 
 let db;
 
