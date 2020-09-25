@@ -42,22 +42,22 @@
               </label>
             </td>
             <td class="product_img_wrapper">
-              <img class="product_img" src="<%= productObj.imgUrl %>" alt="<%= productObj._id %>">
+              <img class="product_img" src="<%= productObj.productId.imgUrl %>" alt="<%= productObj._id %>">
             </td>
             <td>
               <span>상품번호: <%= productObj._id %></span>
-              <span><%= productObj.name %></span>
-              <span>개당 <%= Math.floor(productObj.price) %></span>
+              <span><%= productObj.productId.name %></span>
+              <span>개당 <%= Math.floor(productObj.productId.price) %></span>
             </td>
             <td>
               <form action="" method="POST" class="product_qty">
                 <input type="number" name="productQty" value="<%= productObj.qty %>" class="product_qty__input" />
               </form>
             </td>
-            <td><%= Math.floor(productObj.price * productObj.qty) %></td>
+            <td><%= Math.floor(productObj.productId.price * productObj.qty) %></td>
             <td>
               <form action="/cart/product-delete" method="POST" class="product_delete">
-                <input type="hidden" value="<%= productObj._id %>" name="productID">
+                <input type="hidden" value="<%= productObj.productId._id %>" name="productID">
                 <button type="submit" class="btn_delete">
                   <img src="https://www.emoji.co.uk/files/phantom-open-emojis/symbols-phantom/13107-heavy-multiplication-x.png" alt="삭제" class="delete_img">
                 </button>

@@ -9,7 +9,11 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  return Product.fetchAll()
+  return Product
+    .find()
+    // .select('name price imgUrl -_id')
+    // or
+    // .populate('userId', 'name')
     .then(products => {
       return res.render('shop/product-list', {
         products: products,
@@ -22,11 +26,12 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const productID = req.params.id;
-  return Product.fetchOne(productID)
+  return Product
+    .findById(productID)
     .then(product => {
       return res.render('shop/product-detail', {
         product: product,
-        docTitle: `어스밀-${product.name}`,
+        docTitle: `어스밀 - ${product.name}`,
         path: ''
       });
     })
@@ -35,8 +40,12 @@ exports.getProduct = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   return req.user
-    .getCart()
-    .then(products => {
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      let products;
+      if (!user.cart.items) products = [];
+      else products = user.cart.items;
       return res.render('shop/cart', {
         products: products,
         docTitle: '어스밀 - 내 장바구니',
@@ -48,7 +57,7 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productID;
-  return Product.fetchOne(productID)
+  return Product.findById(productID)
     .then(product => {
       return req.user.addToCart(product);
     })
@@ -65,31 +74,46 @@ exports.deleteCartProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+  const userId = req.user._id;
   return req.user
-    .getCart()
-    .then(products => {
-      return new Order(req.user._id, products);
-    })
-    .then(order => {
-      return order.save(req.user._id)
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      const orderedProducts = user.cart.items
+        .map(i => {
+          return { ...i.productId._doc, qty: i.qty }
+        });
+      const newOrder = new Order({
+        userId: userId,
+        products: orderedProducts
+      });
+      return newOrder.save();
     })
     .then(() => {
-      return req.user.deleteCart();
+      return Order
+        .find({ userId: userId })
+        .select('_id')
     })
+    .then(orders => {
+      return req.user.addOrder(orders)
+    })
+    .then(() => req.user.deleteCart())
     .then(() => res.redirect('/orders'))
     .catch(err => console.log(err));
 };
 
 exports.getOrders = (req, res, next) => {
+  const userId = req.user._id;
   return Order
-    .fetchAll(req.user._id)
+    .find({ userId: userId })
+    .select('products')
     .then(orders => {
       return res.render('shop/orders', {
         orders: orders,
         docTitle: '어스밀 - 내 주문목록',
         path: '/orders'
-      })
-    })
+      });
+    });
 };
 
 // exports.getCheckout = (req, res, next) => {
@@ -98,5 +122,3 @@ exports.getOrders = (req, res, next) => {
 //     path: '/checkout'
 //   });
 // };
-
-// {orderId: [{product1}, {product2}], orderId2: [...]}
