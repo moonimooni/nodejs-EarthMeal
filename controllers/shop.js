@@ -39,6 +39,10 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
+  //note
+  //if just wanna use req.session.user, instaed of implementing req.user to every request,
+  //use
+  //req.session.user = new User().init(req.session.user);
   return req.user
     .populate('cart.items.productId')
     .execPopulate()
@@ -58,10 +62,8 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
   const productID = req.body.productID;
   return Product.findById(productID)
-    .then(product => {
-      return req.user.addToCart(product);
-    })
-    .then(result => res.redirect('/cart'))
+    .then(product => req.user.addToCart(product))
+    .then(() => res.redirect('/cart'))
     .catch(err => console.log(err));
 };
 

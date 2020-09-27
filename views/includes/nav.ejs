@@ -7,11 +7,17 @@
     <div class="banner__user">
       <ul class="banner__user_menu">
         <li class="user__link user__join">
-          <a href="#">회원가입</a>
+          <a href="/join">회원가입</a>
         </li>
+        <% if (!isLoggedIn) { %>
         <li class="user__link user__login">
-          <a href="#">로그인</a>
+          <a href="/login" class="<%= path === '/login' ? 'active' : '' %>">로그인</a>
         </li>
+        <% } else { %>
+        <form action="/logout" method="POST" class="user__link user__logout">
+          <input type="submit" class="<%= path === '/logout' ? 'active' : '' %>" value="로그아웃" />
+        </form>
+        <% } %>
       </ul>
     </div>
     <div class="banner__logo">
@@ -34,6 +40,7 @@
           전체 상품
         </a>
       </li>
+      <% if (isLoggedIn) { %>
       <li class="dir__list">
         <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">
           내 장바구니
@@ -54,6 +61,7 @@
           상품 관리
         </a>
       </li>
+      <% } %>
     </ul>
     <div class="gnb__side_search">
       <form class="side_search" action="#">
@@ -62,29 +70,31 @@
       </form>
     </div>
   </nav>
-</header>
 
-<nav class="mobile-nav">
-  <ul class="mobile-nav__item-list">
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
-    </li>
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
-    </li>
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
-    </li>
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
-    </li>
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
-      </a>
-    </li>
-    <li class="mobile-nav__item">
-      <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
-      </a>
-    </li>
-  </ul>
-</nav>
+  <nav class="mobile-nav">
+    <ul class="mobile-nav__item-list">
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+      </li>
+      <% if (isLoggedIn) { %>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">Orders</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/admin/add-product' ? 'active' : '' %>" href="/admin/add-product">Add Product
+        </a>
+      </li>
+      <li class="mobile-nav__item">
+        <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </nav>
+</header>

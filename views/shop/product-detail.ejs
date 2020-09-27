@@ -1,13 +1,14 @@
 <%- include('../includes/head.ejs') %>
 <link rel="stylesheet" href="/css/product-detail.css">
 </head>
+
 <body>
   <%- include('../includes/nav.ejs') %>
   <main>
     <div id="content">
       <section class="content__section">
         <div class="content__additional_img">
-          
+
         </div>
         <div class="content__img">
           <img src="<%= product.imgUrl %>" alt="<%= product.name %>">
@@ -70,6 +71,7 @@
               <input class="order_howmany" type="number" name="buy" placeholder="1" />
               <span class="qty">개</span>
               <span class="total_price"><%= Math.floor(product.price) %>원</span>
+              <% if (isLoggedIn) { %>
               <div class="content__order_type">
                 <form class="cart_post order_post" action="/cart" method="POST">
                   <input type="hidden" name="productID" value="<%= product._id %>">
@@ -83,6 +85,21 @@
                   </button>
                 </form>
               </div>
+              <% } else { %>
+              <div class="content__order_type">
+                <form class="cart_post order_post" action="/login" method="GET">
+                  <input type="hidden" name="productID" value="<%= product._id %>">
+                  <button class="order_style order_cart" type="submit">
+                    장바구니 담기
+                  </button>
+                </form>
+                <form class="buy_post order_post" action="/order-create" method="POST">
+                  <button class="order_style order_now" type="submit">
+                    바로 구매
+                  </button>
+                </form>
+              </div>
+              <% } %>
             </div>
           </div>
         </div>
