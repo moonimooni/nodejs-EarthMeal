@@ -1,0 +1,22 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+  <%- include('../includes/nav.ejs') %>
+  <main>
+    <section id="login">
+      <h1 class="page_title">비밀번호 찾기</h3>
+        <% if (errorMessage) { %>
+          <div class="error"><%= errorMessage %></div>
+        <% } %>
+        <div class="form_wrapper">
+          <form class="login__form" action="/find-pwd" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input id="name" class="input" type="name" name="name" placeholder="이름을 입력해 주세요" />
+            <input id="email" class="input" type="text" name="email" placeholder="이메일을 입력해주세요" />
+            <input class="btn_submit btn" type="submit" value="찾기" />
+          </form>
+        </div>
+    </section>
+    <%- include('../includes/end.ejs') %>

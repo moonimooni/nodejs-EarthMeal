@@ -28,7 +28,7 @@
 }
 
 .login__search {
-  margin: 16px 0 32px 0;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
 }
@@ -50,6 +50,7 @@
   height: 42px;
   cursor: pointer;
   font-size: 16px;
+  margin-top: 32px;
 }
 
 .btn:hover {
@@ -64,4 +65,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.invalid {
+  border: 2px solid #ff9f29;
 }

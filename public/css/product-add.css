@@ -61,3 +61,7 @@ label {
   color: #001505;
   background: #eee600;
 }
+
+.invalid {
+  border: 2px solid #ff9f29;
+}

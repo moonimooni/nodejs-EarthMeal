@@ -1,0 +1,86 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+  <%- include('../includes/nav.ejs') %>
+  <main>
+    <section id="join">
+      <h1 class="page_title">회원 가입</h1>
+      <h3 class="must_list">필수 항목</h3>
+      <div class="form_wrapper">
+        <form class="join__form" action="/join" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="join__email">
+            <label for="email">이메일</label>
+            <input id="email" class="input <%= errorMessage.find(e => e.param === 'email') ? 'invalid' : '' %>" type="text" name="email" placeholder="이메일을 입력해주세요" value="<%= oldInput.email %>" />
+            <% if (errorMessage.find(i => i.param === 'email')) { %>
+            <% let index = errorMessage.findIndex(i => i.param === 'email') %>
+            <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <div class="join__password">
+            <label for="password">비밀번호</label>
+            <input id="password" class="input <%= errorMessage.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" placeholder="비밀번호를 입력해주세요"
+              value="<%= oldInput.password %>" />
+            <% if (errorMessage.find(i => i.param === 'password')) { %>
+            <% let index = errorMessage.findIndex(i => i.param === 'password') %>
+            <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <div class="join__password_chk">
+            <label for="password_chk">비밀번호 확인</label>
+            <input id="password_chk" class="input <%= errorMessage.find(e => e.param === 'password_chk') ? 'invalid' : '' %>" type="password" name="password_chk" placeholder="비밀번호를 한번 더 입력해주세요" value="<%= oldInput.passwordChk %>" />
+            <% if (errorMessage.find(i => i.param === 'password_chk')) { %>
+            <% let index = errorMessage.findIndex(i => i.param === 'password_chk') %>
+            <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <div class="join__name">
+            <label for="name">이름</label>
+            <input id="name" class="input <%= errorMessage.find(e => e.param === 'name') ? 'invalid' : '' %>" type="text" name="name" placeholder="이름을 입력해주세요"
+              value="<%= oldInput.name %>" />
+          </div>
+          <div class="join__tel">
+            <label for="tel">핸드폰</label>
+            <input id="tel" class="input <%= errorMessage.find(e => e.param === 'tel') ? 'invalid' : '' %>" type="tel" name="tel" placeholder="핸드폰 번호를 입력해주세요"
+              value=" <%= oldInput.tel %>" />
+          </div>
+          <div class="address">
+            <label for="address">주소</label>
+            <input id="address" class="address" type="button" name="address" value="주소 검색"
+              onclick="execFindAddress()" />
+          </div>
+          <input type="text" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly"
+            value=" <%= oldInput.postcode %>" style="display: none;">
+          <input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소" readonly="readonly"
+            value=" <%= oldInput.roadAddress %>" style="display: none;">
+          <input type="text" name="jibunAddress" id="jibunAddress" placeholder="지번주소" readonly="readonly"
+            value=" <%= oldInput.jibunAddress %>" style="display: none;">
+          <input type="text" name="extraAddress" id="extraAddress" placeholder="나머지 주소를 입력해주세요"
+            value=" <%= oldInput.extraAddress %>" style="display: none;">
+          <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+          <script defer src="/js/address-popup.js" defer></script>
+          <h3 class="must_list">추가 항목</h3>
+          <div class="join__gender">
+            <span>성별</span>
+            <input type="radio" id="male" value="M" name="gender" />
+            <label for="male">남성</label>
+            <input type="radio" id="female" value="F" name="gender" />
+            <label for="female">여성</label>
+            <input type="radio" id="non_binary" value="N" name="gender" />
+            <label for="non_binary">기타</label>
+            <input type="radio" id="none" value="" name="gender" checked />
+            <label for="none">선택 안함</label>
+          </div>
+          <div class="join_birth_day">
+            <span>생년월일</span>
+            <input type="number" name="year" size="4" maxlength="4" placeholder="YYYY" />
+            <input type="number" name="month" size="2" maxlength="2" placeholder="MM" />
+            <input type="number" name="day" size="2" maxlength="2" placeholder="DD" />
+          </div>
+          <button type="submit">가입하기</button>
+        </form>
+      </div>
+    </section>
+    <%- include('../includes/end.ejs') %>

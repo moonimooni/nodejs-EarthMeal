@@ -1,5 +1,15 @@
-const errorController = (req, res, next) => {
-  res.status(404).render('404', {docTitle : 'ERROR', path: ''});
+exports.get404 = (req, res, next) => {
+  res.status(404).render('404', {
+    docTitle : 'ERROR', 
+    path: '',
+    isLoggedIn: req.session.isLoggedIn
+  });
 };
 
-module.exports = errorController;
+exports.get500 = (req, res, next) => {
+  res.status(500).render('500', {
+    docTitle : 'ERROR', 
+    path: '',
+    isLoggedIn: req.session.isLoggedIn
+  });
+};

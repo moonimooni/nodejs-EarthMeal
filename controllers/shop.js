@@ -4,7 +4,7 @@ const Order = require('../models/order');
 exports.getIndex = (req, res, next) => {
   return res.render('shop/index', {
     docTitle: '어스밀',
-    path: '/'
+    path: '/',
   });
 };
 
@@ -21,7 +21,11 @@ exports.getProducts = (req, res, next) => {
         path: '/products'
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getProduct = (req, res, next) => {
@@ -56,7 +60,11 @@ exports.getCart = (req, res, next) => {
         path: '/cart'
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postCart = (req, res, next) => {
@@ -64,7 +72,11 @@ exports.postCart = (req, res, next) => {
   return Product.findById(productID)
     .then(product => req.user.addToCart(product))
     .then(() => res.redirect('/cart'))
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.deleteCartProduct = (req, res, next) => {
@@ -72,7 +84,11 @@ exports.deleteCartProduct = (req, res, next) => {
   return req.user
     .deleteFromCart(productID)
     .then(result => res.redirect('/cart'))
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postOrder = (req, res, next) => {
@@ -101,7 +117,11 @@ exports.postOrder = (req, res, next) => {
     })
     .then(() => req.user.deleteCart())
     .then(() => res.redirect('/orders'))
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getOrders = (req, res, next) => {

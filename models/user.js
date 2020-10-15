@@ -1,13 +1,36 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const User = new Schema({
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true
   },
-  email: {
+  tel: {
     type: String,
     required: true
+  },
+  address: {
+    variables: [{
+      main: { type: Boolean, required: true },
+      postcode: { type: String, required: true },
+      roadAddress: { type: String, required: true },
+    }]
+  },
+  gender: {
+    type: String,
+    required: false
+  },
+  birthDay: {
+    type: String,
+    required: false
   },
   cart: {
     items: [{
@@ -29,19 +52,17 @@ const User = new Schema({
       ref: 'Order',
       required: false
     }
-  }]
+  }],
+  resetToken: String,
+  resetTokenExp: Date
 });
 
 User.methods.addToCart = function (product) {
-  if (!this.cart) this.cart = { items: [] };
-
   const cartProducts = this.cart.items;
-
   const cartProductIndex = cartProducts
     .findIndex(cartProduct => {
       return cartProduct.productId.toString() === product._id.toString();
     });
-  let qty = 1;
 
   if (cartProductIndex >= 0) {
     cartProducts[cartProductIndex].qty += 1;

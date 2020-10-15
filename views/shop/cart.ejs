@@ -51,12 +51,14 @@
             </td>
             <td>
               <form action="" method="POST" class="product_qty">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="number" name="productQty" value="<%= productObj.qty %>" class="product_qty__input" />
               </form>
             </td>
             <td><%= Math.floor(productObj.productId.price * productObj.qty) %></td>
             <td>
               <form action="/cart/product-delete" method="POST" class="product_delete">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" value="<%= productObj.productId._id %>" name="productID">
                 <button type="submit" class="btn_delete">
                   <img src="https://www.emoji.co.uk/files/phantom-open-emojis/symbols-phantom/13107-heavy-multiplication-x.png" alt="삭제" class="delete_img">
@@ -70,6 +72,7 @@
     </section>
     <section id="cart_result">
       <form action="/order-create" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button type="submit" class="btn_go_order">주문하기</button>
       </form>
     </section>

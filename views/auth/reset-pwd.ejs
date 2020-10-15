@@ -1,0 +1,24 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+  <%- include('../includes/nav.ejs') %>
+  <main>
+    <section id="login">
+      <h1 class="page_title">비밀번호 변경</h3>
+        <div class="form_wrapper">
+          <form class="login__form" action="/reset-pwd" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="userId" value="<%= userId %>">
+            <input type="hidden" name="pwdToken" value="<%= pwdToken %>">
+            <input id="password" class="input" type="password" name="password" placeholder="변경할 비밀번호를 입력해주세요" />
+            <input id="password_chk" class="input" type="password" name="password_chk" placeholder="비밀번호를 한 번 더 입력해주세요" />
+            <% if (errorMessage) { %>
+              <div class="error"><%= errorMessage %></div>
+            <% } %>
+            <input class="btn_submit btn" type="submit" value="변경하기" />
+          </form>
+        </div>
+    </section>
+    <%- include('../includes/end.ejs') %>

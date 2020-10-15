@@ -19,7 +19,7 @@
       <article class="card product">
         <div class="card__img">
           <a href="/product-detail/<%= product._id %>">
-            <img src="<%= product.imgUrl %>" alt="<%= product.name %>" />
+            <img src="<%= product.img %>" alt="<%= product.name %>" />
           </a>
         </div>
         <div class="card__content">
@@ -39,6 +39,7 @@
         <div class="card__action">
           <form action="/cart" method="POST">
             <button class="btn" type="submit">장바구니 담기</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="productID" value="<%= product._id %>">
           </form>
         </div>
@@ -46,6 +47,7 @@
         <div class="card__action">
           <form action="/login" method="GET">
             <button class="btn" type="submit">장바구니 담기</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="productID" value="<%= product._id %>">
           </form>
         </div>

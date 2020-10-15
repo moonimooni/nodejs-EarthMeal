@@ -15,6 +15,7 @@
         </li>
         <% } else { %>
         <form action="/logout" method="POST" class="user__link user__logout">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <input type="submit" class="<%= path === '/logout' ? 'active' : '' %>" value="로그아웃" />
         </form>
         <% } %>
@@ -66,6 +67,7 @@
     <div class="gnb__side_search">
       <form class="side_search" action="#">
         <input type="text" label="검색어" class="search_text">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="image" src="/img/ico/search.png" class="search_ico">
       </form>
     </div>

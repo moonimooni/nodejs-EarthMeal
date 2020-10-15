@@ -1,6 +1,7 @@
 <%- include('../includes/head.ejs') %>
-  <link rel="stylesheet" href="/css/product-add.css">
+<link rel="stylesheet" href="/css/product-add.css">
 </head>
+
 <body>
   <%- include('../includes/nav.ejs') %>
   <main>
@@ -9,13 +10,22 @@
         <h3>상품 등록</h3>
       </div>
       <form class="product_form" action="/admin/product-add" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <div class="input_wrapper input_name">
           <label for="name">상품 이름</label>
-          <input id="name" class="input" type="text" name="name">
+          <input id="name" class="input <%= errorMessage.find(e => e.param === 'name') ? 'invalid' : '' %>" type="text" name="name" value="<%= oldInput.name %>">
+          <% if (errorMessage.find(i => i.param === 'name')) { %>
+          <% let index = errorMessage.findIndex(i => i.param === 'name') %>
+          <div class="error"><%= errorMessage[index].msg %></div>
+          <% } %>
         </div>
         <div class="input_wrapper input_imgUrl">
           <label for="imgUrl">이미지 링크</label>
-          <input id="imgUrl" class="input" type="text" name="imgUrl">
+          <input id="imgUrl" class="input <%= errorMessage.find(e => e.param === 'imgUrl') ? 'invalid' : '' %>" type="text" name="imgUrl" value="<%= oldInput.imgUrl %>">
+          <% if (errorMessage.find(i => i.param === 'imgUrl')) { %>
+          <% let index = errorMessage.findIndex(i => i.param === 'imgUrl') %>
+          <div class="error"><%= errorMessage[index].msg %></div>
+          <% } %>
         </div>
         <div class="input_wrapper input_price">
           <label for="price">가격</label>
@@ -23,10 +33,10 @@
         </div>
         <div class="input_wrapper input_description">
           <label for="description">설명</label>
-          <textarea name="description" class="input" id="description" cols="30" rows="5"></textarea>
+          <textarea name="description" class="input" id="description" cols="30" rows="5" maxlength="23"></textarea value="<%= oldInput.description %>">
         </div>
-          <input class="submit" type="submit" value="등록하기">
-        </div>
-      </form>
+        <input class="submit" type="submit" value="등록하기">
     </div>
-<%- include('../includes/end.ejs') %>
+    </form>
+    </div>
+    <%- include('../includes/end.ejs') %>

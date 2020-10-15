@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product-add.css">
+</head>
+
+  <body>
+  <%- include('../includes/nav.ejs') %>
+    <main>
+      <div id="form_wrapper">
+        <div class="form_name">
+          <h3>상품 등록</h3>
+        </div>
+        <% if (errorMessage.find(i => i.param === 'server')) { %>
+          <% let index = errorMessage.findIndex(i => i.param === 'server') %>
+          <div class="error"><%= errorMessage[index].msg %></div>
+        <% } %>
+        <form class="product_form" action="/admin/product-update" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <% if (editing) { %>
+          <input type="hidden" name="id" value="<%= product._id %>">
+          <% } %>
+          <div class="input_wrapper input_name">
+            <label for="name">상품 이름</label>
+            <input id="name" class="input <%= errorMessage.find(e => e.param === 'name') ? 'invalid' : '' %>" type="text" name="name" value="<% if (editing || product) { %><%= product.name %><% } %>" />
+            <% if (errorMessage.find(i => i.param === 'name')) { %>
+              <% let index = errorMessage.findIndex(i => i.param === 'name') %>
+              <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <div class="input_wrapper input_img">
+            <label for="img">이미지 링크</label>
+            <input id="img" class="input <%= errorMessage.find(e => e.param === 'img') ? 'invalid' : '' %>" type="text" name="img" value="<% if (editing || product) { %><%= product.img %><% } %>" />
+            <% if (errorMessage.find(i => i.param === 'img')) { %>
+              <% let index = errorMessage.findIndex(i => i.param === 'img') %>
+              <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <!-- <div class="input_wrapper input_img">
+            <label for="img">이미지</label>
+            <input id="img" type="file" name="img" />
+            <% if (errorMessage.find(i => i.param === 'img')) { %>
+              <% let index = errorMessage.findIndex(i => i.param === 'img') %>
+              <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div> -->
+          <div class="input_wrapper input_price">
+            <label for="price">가격</label>
+            <input id="price" class="input <%= errorMessage.find(e => e.param === 'price') ? 'invalid' : '' %>" type="number" name="price" value="<% if (editing || product) { %><%= product.price %><% } %>" />
+            <% if (errorMessage.find(i => i.param === 'price')) { %>
+              <% let index = errorMessage.findIndex(i => i.param === 'price') %>
+              <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <div class="input_wrapper input_description">
+            <label for="description">설명</label>
+            <textarea name="description" class="input <%= errorMessage.find(e => e.param === 'description') ? 'invalid' : '' %>" id="description" cols="30" rows="5" maxlength="23"><% if (editing || product) { %><%= product.description %><% } %></textarea>
+            <% if (errorMessage.find(i => i.param === 'description')) { %>
+              <% let index = errorMessage.findIndex(i => i.param === 'description') %>
+              <div class="error"><%= errorMessage[index].msg %></div>
+            <% } %>
+          </div>
+          <input class="submit" type="submit" value="등록하기">
+        </form>
+      </div>
+    <%- include('../includes/end.ejs') %>
