@@ -1,19 +1,77 @@
 <div class="backdrop"></div>
 <header>
-  <button id="side-menu-toggle">
-    <img class="menu_toggle_ico" src="/img/ico/toggle_menu.png" alt="">
-  </button>
   <div id="banner">
     <div class="banner__user">
       <ul class="banner__user_menu">
+        <% if (!isLoggedIn) { %>
         <li class="user__link user__join">
           <a href="/join">회원가입</a>
         </li>
-        <% if (!isLoggedIn) { %>
         <li class="user__link user__login">
           <a href="/login" class="<%= path === '/login' ? 'active' : '' %>">로그인</a>
         </li>
         <% } else { %>
+        <div id="user">
+          <a class="user__info_name" href="#">
+            <img class="down_ico" src="img/ico/down.png" alt="">
+            <%= loggedInUser.name %>님
+          </a>
+          <span class="user__info_wrapper">
+            <ul class="user__info_dir">
+              <% if (isAdmin) { %>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="/admin/product-add">
+                    <img class="user__info_ico" src="img/ico/delivery.png" alt="">
+                    상품등록
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="admin/products">
+                    <img class="user__info_ico" src="img/ico/delivery.png" alt="">
+                    상품관리
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="#">
+                    <img class="user__info_ico" src="img/ico/delivery.png" alt="">
+                    주문 현황
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="/product-add">
+                    <img class="user__info_ico" src="img/ico/delivery.png" alt="">
+                    관리자
+                  </a>
+                </li>
+              <% } else { %>                
+                <li class="user__info_li">
+                  <a class="user__info_a" href="/orders">
+                    <img class="user__info_ico" src="img/ico/delivery.png" alt="">
+                    주문내역
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="">
+                    <img class="user__info_ico" src="img/ico/heart.png" alt="">
+                    찜 목록
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="">
+                    <img class="user__info_ico" src="img/ico/coupon.png" alt="">
+                    쿠폰
+                  </a>
+                </li>
+                <li class="user__info_li">
+                  <a class="user__info_a" href="/cart">
+                    <img class="user__info_ico" src="img/ico/bag.png" alt="">
+                    장바구니
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          </span>
+        </div>
         <form action="/logout" method="POST" class="user__link user__logout">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <input type="submit" class="<%= path === '/logout' ? 'active' : '' %>" value="로그아웃" />
@@ -30,38 +88,57 @@
     </div>
   </div>
   <nav class="gnb">
+    <!-- <button id="side-menu-toggle">
+      <img class="menu_toggle_ico" src="/img/ico/toggle_menu.png" alt="">
+    </button> -->
     <ul class="gnb__dir">
+      <li class="dir__list ctg">
+        <a class="<%= path === '/category' ? 'active' : '' %> ctg_toggler" href="/products">
+          <img class="menu_toggle_ico" src="/img/ico/toggle_menu.png" alt="">
+          전체 카테고리
+        </a>
+        <nav class="ctg_box">
+          <ul class="ctg_box_layer">
+            <li class="ctg_list">
+              <a class="ctg_link" href="">
+                도시락
+              </a>
+            </li>
+            <li class="ctg_list">
+              <a class="ctg_link" href="">
+                사이드 디시
+              </a>
+            </li>
+            <li class="ctg_list">
+              <a class="ctg_link" href="">
+                디저트
+              </a>
+            </li>
+            <li class="ctg_list">
+              <a class="ctg_link" href="">
+                반려동물 식품
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </li>
       <li class="dir__list">
-        <a class="<%= path === '/' ? 'active' : '' %>" href="/">
-          홈
+        <a class="<%= path === '/events' ? 'active' : '' %>" href="/community">
+          이벤트
         </a>
       </li>
       <li class="dir__list">
-        <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">
-          전체 상품
+        <a class="<%= path === '/products/onsale' ? 'active' : '' %>" href="/products/onsale">
+          특가상품
+        </a>
+      </li>
+      <li class="dir__list">
+        <a class="<%= path === '/admin/product-add' ? 'active' : '' %>" href="/community">
+          밀리기록
         </a>
       </li>
       <% if (isLoggedIn) { %>
-      <li class="dir__list">
-        <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">
-          내 장바구니
-        </a>
-      </li>
-      <li class="dir__list">
-        <a class="<%= path === '/orders' ? 'active' : '' %>" href="/orders">
-          주문 현황
-        </a>
-      </li>
-      <li class="dir__list">
-        <a class="<%= path === '/admin/product-add' ? 'active' : '' %>" href="/admin/product-add">
-          상품 등록
-        </a>
-      </li>
-      <li class="dir__list">
-        <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">
-          상품 관리
-        </a>
-      </li>
+
       <% } %>
     </ul>
     <div class="gnb__side_search">
@@ -71,6 +148,9 @@
         <input type="image" src="/img/ico/search.png" class="search_ico">
       </form>
     </div>
+    <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">
+      <img class="bag_ico" src="img/ico/bag.png" alt="">
+    </a>
   </nav>
 
   <nav class="mobile-nav">

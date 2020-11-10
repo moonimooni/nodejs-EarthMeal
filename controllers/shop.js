@@ -1,3 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const PDFDoc = require('pdfkit')
+
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -43,10 +47,9 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  //note
-  //if just wanna use req.session.user, instaed of implementing req.user to every request,
-  //use
-  //req.session.user = new User().init(req.session.user);
+  //if just wanna use req.session.user, 
+  //instaed of implementing req.user to every request,
+  //use req.session.user = new User().init(req.session.user);
   return req.user
     .populate('cart.items.productId')
     .execPopulate()
@@ -90,6 +93,8 @@ exports.deleteCartProduct = (req, res, next) => {
       return next(error);
     });
 };
+
+//👇order controller
 
 exports.postOrder = (req, res, next) => {
   const userId = req.user._id;
@@ -135,6 +140,51 @@ exports.getOrders = (req, res, next) => {
         docTitle: '어스밀 - 내 주문목록',
         path: '/orders'
       });
+    });
+};
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId;
+  Order.findById(orderId)
+    .then(order => {
+      if (!order) {
+        const err = new Error('유효한 주문 내역이 없습니다.');
+        return next(err);
+      };
+      if (order.userId.toString() !== req.user._id.toString()) {
+        const err = new Error('승인되지 않은 사용자입니다.');
+        return next(err);
+      };
+      const invoiceName = `${orderId}.pdf`;
+      const invoicePath = path.join('data', 'invoices', invoiceName);
+      res.setHeader('Content-Type', 'application/pdf');
+      // res.setHeader(
+      //  'Content-Disposition', 
+      //  'inline; filename="' + invoiceName + '"'
+      // )
+      const pdf = new PDFDoc();
+      pdf.pipe(fs.createWriteStream(invoicePath));
+      pdf.pipe(res);
+      pdf.font('/Users/moonimooni/Library/Fonts/NanumBarunGothicBold.TTF')
+      pdf.fontSize(24).text('주문 영수증');
+      pdf.fontSize(22).text('------------------------------------');
+      pdf.fontSize(22).text(' ');
+      let totalPrice = 0;
+      order.products.forEach(product => {
+        totalPrice += (product.price * product.qty);
+        pdf.fontSize(18).text(product.name);
+        pdf.fontSize(16);
+        pdf.text(`수량: ${product.qty}개`);
+        pdf.text(`금액: ${product.price * product.qty}`);
+        pdf.text(' ');
+      });
+      pdf.fontSize(22).text(`총 금액: ${totalPrice}`)
+      pdf.end();
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 

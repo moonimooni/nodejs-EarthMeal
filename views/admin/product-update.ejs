@@ -13,7 +13,7 @@
           <% let index = errorMessage.findIndex(i => i.param === 'server') %>
           <div class="error"><%= errorMessage[index].msg %></div>
         <% } %>
-        <form class="product_form" action="/admin/product-update" method="POST">
+        <form class="product_form" action="/admin/product-update" method="POST" enctype="multipart/form-data">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <% if (editing) { %>
           <input type="hidden" name="id" value="<%= product._id %>">
@@ -26,22 +26,21 @@
               <div class="error"><%= errorMessage[index].msg %></div>
             <% } %>
           </div>
-          <div class="input_wrapper input_img">
+          <!-- <div class="input_wrapper input_img">
             <label for="img">이미지 링크</label>
             <input id="img" class="input <%= errorMessage.find(e => e.param === 'img') ? 'invalid' : '' %>" type="text" name="img" value="<% if (editing || product) { %><%= product.img %><% } %>" />
             <% if (errorMessage.find(i => i.param === 'img')) { %>
               <% let index = errorMessage.findIndex(i => i.param === 'img') %>
               <div class="error"><%= errorMessage[index].msg %></div>
             <% } %>
-          </div>
-          <!-- <div class="input_wrapper input_img">
+          </div> -->
+          <div class="input_wrapper input_img">
             <label for="img">이미지</label>
             <input id="img" type="file" name="img" />
-            <% if (errorMessage.find(i => i.param === 'img')) { %>
-              <% let index = errorMessage.findIndex(i => i.param === 'img') %>
-              <div class="error"><%= errorMessage[index].msg %></div>
+            <% if (uploadError) { %>
+              <div class="error"><%= uploadError.msg %></div>
             <% } %>
-          </div> -->
+          </div>
           <div class="input_wrapper input_price">
             <label for="price">가격</label>
             <input id="price" class="input <%= errorMessage.find(e => e.param === 'price') ? 'invalid' : '' %>" type="number" name="price" value="<% if (editing || product) { %><%= product.price %><% } %>" />

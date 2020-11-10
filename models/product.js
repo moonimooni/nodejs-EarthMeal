@@ -13,11 +13,11 @@ const Product = new Schema({
     type: String,
     required: true
   },
-  img: {
+  imgUrl: {
     type: String,
     required: true
   },
-  userId: {
+  uploaderId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true

@@ -12,6 +12,8 @@ body, .dir__list, .gnb__dir, .banner__user_menu, dt, dd {
 
 body {
   font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 input {
@@ -25,4 +27,9 @@ input {
 a {
   text-decoration: none;
   color: #6a6a6a ;
+}
+
+button {
+  background: transparent;
+  border: none;
 }

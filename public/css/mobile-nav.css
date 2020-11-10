@@ -54,13 +54,14 @@
 }
 
 #side-menu-toggle {
+  padding-top: 4px;
   border: none;
+  padding: 0;
   font: inherit;
-  padding: 0.5rem;
-  display: block;
   background: transparent;
   color: white;
   cursor: pointer;
+  margin: 6px 8px 0 0;
 }
 
 #side-menu-toggle:focus {

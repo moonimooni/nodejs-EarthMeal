@@ -1,19 +1,19 @@
+const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const { body, validationResult } = require('express-validator');
-
-// require('dotenv').config();
-// const sgMail = require('@sendgrid/mail');
-// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const { validationResult } = require('express-validator');
 
 const User = require('../models/user');
+const Admin = require('../models/admin');
+
+///////////////nodemailer////////////////
 const transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
-    user: "9a05d89dc6f0c7",
-    pass: "2fed56616b5977"
+    user: process.env.MAILTRAP_USER,
+    pass: process.env.MAILTRAP_PASS
   }
 });
 
@@ -25,6 +25,7 @@ transport.verify(function (error, success) {
   };
 });
 
+///////////login controller///////////
 exports.getLogin = (req, res, next) => {
   let errorMessage = req.flash('error')
   if (errorMessage.length > 0) {
@@ -44,6 +45,34 @@ exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  Admin
+    .findOne({ email: email })
+    .then(user => {
+      if (!user) {
+        console.log('일반 사용자로 패스');
+        return;
+      }
+      return bcrypt
+        .compare(password, user.password)
+        .then(match => {
+          if (match) {
+            req.session.admin = user;
+            req.session.isLoggedIn = true;
+            req.session.isAdmin = true;
+            return res.redirect('/');
+          } else {
+            req.flash('error', '이메일 또는 비밀번호 오류입니다');
+            return res.redirect('/login');
+          };
+        });
+    })
+    .catch(err => {
+      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+
   User
     .findOne({ email: email })
     .then(user => {
@@ -57,28 +86,31 @@ exports.postLogin = (req, res, next) => {
           if (match) {
             req.session.user = user;
             req.session.isLoggedIn = true;
-            // req.session.save(err => console.log(err)) ??
+            console.log(user);
             return res.redirect('/');
           } else {
             req.flash('error', '이메일 또는 비밀번호 오류입니다');
             return res.redirect('/login');
           };
-        })
+        });
     })
     .catch(err => {
+      console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
     });
 };
 
+///////////logout controller///////////
 exports.postLogout = (req, res, next) => {
-  return req.session.destroy((err) => {
+  return req.session.destroy(err => {
     if (err) console.log(err);
     return res.redirect('/');
   });
 };
 
+///////////creating user controller///////////
 exports.getJoin = (req, res, next) => {
   return res.render('auth/join', {
     docTitle: '어스밀 - 회원가입',
@@ -166,11 +198,6 @@ exports.postJoin = (req, res, next) => {
         html: '<h1>그리너가 되신 걸 환영합니다</h1><div>우리 모두 채식을 통해 지구도 살리고 건강한 몸을 만들어 가요.</div>'
       };
       return transport.sendMail(mailContent);
-      // return sgMail
-      //   .send(mailContent)
-      //   .then(() => {}, error => {
-      //     console.error(error);
-      //   });
     })
     .catch(err => {
       const error = new Error(err);
@@ -179,6 +206,7 @@ exports.postJoin = (req, res, next) => {
     });
 };
 
+///////////password controller///////////
 exports.getFindPwd = (req, res, next) => {
   let errorMessage = req.flash('error')
   if (errorMessage.length > 0) {

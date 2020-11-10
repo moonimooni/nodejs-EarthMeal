@@ -15,11 +15,11 @@
   <main>
     <% if (products.length > 0) { %>
     <div class="grid">
-      <% for (let product of products) { %>
+      <% for (product of products) { %>
       <article class="card product">
         <div class="card__img">
           <a href="/product-detail/<%= product._id %>">
-            <img src="<%= product.img %>" alt="<%= product.name %>" />
+            <img src="<%= product.imgUrl %>" alt="<%= product.name %>" />
           </a>
         </div>
         <div class="card__content">

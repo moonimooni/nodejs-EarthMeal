@@ -96,6 +96,6 @@ User.methods.addOrder = function (orderIds) {
 User.methods.deleteCart = function () {
   this.cart = { items: [] };
   return this.save();
-}
+};
 
 module.exports = mongoose.model('User', User);

@@ -10,12 +10,6 @@ const Order = new Schema({
     type: Array,
     required: true
   },
-  // products: [
-  //   {
-  //     _id: false,
-  //     orderedProductInfo: { type: Object, required: false, ref:'Product' }
-  //   }
-  // ],
   date: {
     type: Date,
     default: Date.now

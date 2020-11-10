@@ -1,11 +1,13 @@
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
+const { deleteFile } = require('../util/file_controller');
 
 exports.getProductAdd = (req, res, next) => {
   return res.render('admin/product-update', {
     docTitle: '어스밀',
     path: '/admin/product-add',
     errorMessage: [],
+    uploadError: {},
     product: undefined,
     editing: false
   });
@@ -28,30 +30,28 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.createOrUpdateProduct = (req, res, next) => {
-
-  console.log('작동하십니까?');
   const errors = validationResult(req);
   const name = req.body.name;
   const price = req.body.price;
   const description = req.body.description;
-  const img = req.body.img;
+  const img = req.file;
   const id = req.body.id;
-
-  // if (!img) {
-  //   errors
-  //     .array()
-  //     .push({param: 'img', msg: 'png, jpg, jpeg 형식만 지원합니다.'});
-  // };
 
   const oldInput = {
     name: name,
     price: price,
     description: description,
-    img: img,
     id: id
   };
 
-  // const imgUrl = 
+  let uploadError;
+  let imgUrl;
+
+  if (!img) {
+    uploadError = { msg: 'png, jpeg, jpg 형식만 지원됩니다.' };
+  } else {
+    imgUrl = `/${img.path}`
+  };
 
   if (!errors.isEmpty() && id) {
     return res
@@ -60,22 +60,22 @@ exports.createOrUpdateProduct = (req, res, next) => {
         docTitle: '어스밀',
         path: '/admin/product-add',
         errorMessage: errors.array(),
+        uploadError: uploadError,
         product: oldInput,
         editing: true
       });
-  } else if (!errors.isEmpty() && !id) {
+  } else if ((!errors.isEmpty() || uploadError) && !id) {
     return res
       .status(422)
       .render('admin/product-update', {
         docTitle: '어스밀',
         path: '/admin/product-add',
         errorMessage: errors.array(),
+        uploadError: uploadError,
         product: oldInput,
         editing: false
       });
   };
-
-  console.log('여기까지 온 걸 보니 에러는 없습니다만...')
 
   Product.findById(id)
     .then(product => {
@@ -83,7 +83,10 @@ exports.createOrUpdateProduct = (req, res, next) => {
         product.name = name;
         product.price = price;
         product.description = description;
-        product.img = img;
+        if (img) {
+          deleteFile(product.imgUrl)
+          product.imgUrl = imgUrl;
+        };
         return product.save();
       } else {
         console.log('상품 등록중');
@@ -91,8 +94,8 @@ exports.createOrUpdateProduct = (req, res, next) => {
           name: name,
           price: price,
           description: description,
-          img: img,
-          userId: req.user
+          imgUrl: imgUrl,
+          uploaderId: req.admin
         });
       };
     })
@@ -122,7 +125,8 @@ exports.getProductEdit = (req, res, next) => {
         docTitle: `어스밀-${product.name}`,
         path: '/admin/product-add',
         editing: editMode,
-        errorMessage: []
+        errorMessage: [],
+        uploadError: {}
       });
     })
     .catch(err => {
@@ -134,7 +138,15 @@ exports.getProductEdit = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const productID = req.params.id;
-  return Product.findByIdAndDelete(productID)
+  Product.findById(productID)
+    .then(product => {
+      if (!product) {
+        const err = new Error('상품을 삭제할 수 없습니다.');
+        return next(err);
+      };
+      return deleteFile(product.imgUrl);
+    })
+    .then(() => Product.findByIdAndDelete(productID))
     .then(() => res.redirect('/admin/products'))
     .catch(err => {
       const error = new Error(err);

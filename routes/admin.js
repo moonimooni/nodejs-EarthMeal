@@ -12,8 +12,8 @@ router.post('/product-update', isAuth,
       .trim()
       .notEmpty().withMessage('필수 입력란입니다.')
       .isLength({ min: 5 }).withMessage('최소 다섯자를 입력해 주세요.'),
-    body('img')
-      .notEmpty().withMessage('필수 입력란입니다.'),
+    // body('img')
+    //   .notEmpty().withMessage('필수 입력란입니다.'),
     body('price')
       .notEmpty().withMessage('필수 입력란입니다.'),
     body('description')
