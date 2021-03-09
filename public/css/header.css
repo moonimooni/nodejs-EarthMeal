@@ -12,6 +12,7 @@ header {
   display: flex;
   flex-direction: column;
   max-width: 1050px;
+  margin-bottom: 20px;
 }
 
 .banner__user_menu {
@@ -104,10 +105,8 @@ header {
   height: 54px;
   display: flex;
   align-items: center;
-  max-width: 1040px;
-  padding: 0 20px;
+  max-width: 1000px;
   margin: 0 auto;
-  margin-top: 18px;
 }
 
 .ctg_toggler {
@@ -147,7 +146,8 @@ header {
 }
 
 .gnb__side_search {
-  margin-right: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .side_search {
@@ -157,6 +157,7 @@ header {
   width: 200px;
   height: 26px;
   border-radius: 13px;
+  margin-right: 24px;
 }
 
 .search_text {
@@ -179,7 +180,7 @@ header {
 }
 
 .bag_ico {
-  width: 36px;
+  width: 32px;
 }
 
 .ctg_box {

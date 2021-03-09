@@ -1,26 +1,26 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const Admin = new Schema({
-  email: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true
-  },
-  tel: {
-    type: String,
-    required: true
-  },
-  resetToken: String,
-  resetTokenExp: Date
-}, {
-  timestamps: true
-});
-
-module.exports = mongoose.model('Admin', Admin);
+module.exports = (sequelize, Sequelize) => {
+  return sequelize.define('admin', {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    tel: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+};

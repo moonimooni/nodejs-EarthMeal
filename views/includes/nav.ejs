@@ -100,7 +100,7 @@
         <nav class="ctg_box">
           <ul class="ctg_box_layer">
             <li class="ctg_list">
-              <a class="ctg_link" href="">
+              <a class="ctg_link" href="/products">
                 도시락
               </a>
             </li>
@@ -137,9 +137,6 @@
           밀리기록
         </a>
       </li>
-      <% if (isLoggedIn) { %>
-
-      <% } %>
     </ul>
     <div class="gnb__side_search">
       <form class="side_search" action="#">
@@ -147,10 +144,11 @@
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="image" src="/img/ico/search.png" class="search_ico">
       </form>
+      <a class="cart_sign" href="/cart">
+        <span class="blind">장바구니</span>
+        <img class="bag_ico" src="/img/ico/bag.png" alt="">
+      </a>
     </div>
-    <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">
-      <img class="bag_ico" src="img/ico/bag.png" alt="">
-    </a>
   </nav>
 
   <nav class="mobile-nav">

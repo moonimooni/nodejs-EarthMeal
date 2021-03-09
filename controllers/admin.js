@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const Product = require('../models/product');
+const { Product } = require('../models/product');
 const { deleteFile } = require('../util/file_controller');
 
 exports.getProductAdd = (req, res, next) => {
@@ -138,15 +138,23 @@ exports.getProductEdit = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const productID = req.params.id;
-  Product.findById(productID)
-    .then(product => {
-      if (!product) {
-        const err = new Error('상품을 삭제할 수 없습니다.');
-        return next(err);
-      };
-      return deleteFile(product.imgUrl);
-    })
-    .then(() => Product.findByIdAndDelete(productID))
+  // Product.findById(productID)
+  //   .then(product => {
+  //     if (!product) {
+  //       const err = new Error('상품을 삭제할 수 없습니다.');
+  //       return next(err);
+  //     };
+  //     return deleteFile(product.imgUrl);
+  //   })
+  //   .then(() => Product.findByIdAndDelete(productID))
+  //   .then(() => res.redirect('/admin/products'))
+  //   .catch(err => {
+  //     const error = new Error(err);
+  //     error.httpStatusCode = 500;
+  //     return next(error);
+  //   });
+  return Product
+    .findByIdAndDelete(productID)
     .then(() => res.redirect('/admin/products'))
     .catch(err => {
       const error = new Error(err);

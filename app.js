@@ -17,11 +17,10 @@ const authRoutes = require('./routes/auth');
 const sessionController = require('./controllers/session');
 
 const { fileStorage, fileFilter } = require('./util/file_controller');
-
-const DB_uri = process.env.MONGO_DB_URI;
+const { sequelize } = require('./models/database');
 
 const store = new MongoDBStore({
-  uri: DB_uri,
+  uri: process.env.MONGO_DB_URI,
   collection: 'sessions'
 });
 
@@ -50,15 +49,13 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(errorRoutes);
 
-mongoose.set('useFindAndModify', false);
-mongoose
-  .connect(DB_uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+sequelize.sync()
+  .then(() => {
+    app.listen(3000)
   })
   .then(() => {
-    return app.listen(3000, () => {
-      console.log('3000 port on');
-    });
+    console.log('3000 port on');
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.log(err);
+  });

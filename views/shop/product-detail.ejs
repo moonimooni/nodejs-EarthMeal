@@ -7,11 +7,11 @@
   <main>
     <div id="content">
       <section class="content__section">
-        <div class="content__additional_img">
+        <div class="content__imgs">
+          <img class="main_img" src="<%= product.imgUrl %>" alt="<%= product.name %>">
+          <div class="content__side_img">
 
-        </div>
-        <div class="content__img">
-          <img src="<%= product.img %>" alt="<%= product.name %>">
+          </div>
         </div>
         <div class="content__info">
           <div class="content__price">
@@ -49,62 +49,62 @@
             </div>
           </div>
           <div class="content__detail">
-            <div class="content__detail_list">
-              <dl>
-                <dt>중량</dt>
-                <dd>310g</dd>
-              </dl>
-              <dl>
-                <dt>보관방법</dt>
-                <dd>냉동보관</dd>
-              </dl>
-              <dl>
-                <dt>원산지</dt>
-                <dd>국산</dd>
-              </dl>
-              <dl>
-                <dt>알레르기 정보</dt>
-                <dd>대두, 밀</dd>
-              </dl>
-            </div>
-            <div class="content__order">
+            <dl>
+              <dt>중량</dt>
+              <dd>310g</dd>
+            </dl>
+            <dl>
+              <dt>보관방법</dt>
+              <dd>냉동보관</dd>
+            </dl>
+            <dl>
+              <dt>원산지</dt>
+              <dd>국산</dd>
+            </dl>
+            <dl>
+              <dt>알레르기 정보</dt>
+              <dd>대두, 밀</dd>
+            </dl>
+          </div>
+          <div class="content__order">
+            <div class="order_qty">
               <input class="order_howmany" type="number" name="buy" placeholder="1" />
-              <span class="qty">개</span>
+              개
               <span class="total_price"><%= Math.floor(product.price) %>원</span>
-              <% if (isLoggedIn) { %>
-              <div class="content__order_type">
-                <form class="cart_post order_post" action="/cart" method="POST">
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  <input type="hidden" name="productID" value="<%= product._id %>">
-                  <button class="order_style order_cart" type="submit">
-                    장바구니 담기
-                  </button>
-                </form>
-                <form class="buy_post order_post" action="/order-create" method="POST">
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  <button class="order_style order_now" type="submit">
-                    바로 구매
-                  </button>
-                </form>
-              </div>
-              <% } else { %>
-              <div class="content__order_type">
-                <form class="cart_post order_post" action="/login" method="GET">
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  <input type="hidden" name="productID" value="<%= product._id %>">
-                  <button class="order_style order_cart" type="submit">
-                    장바구니 담기
-                  </button>
-                </form>
-                <form class="buy_post order_post" action="/order-create" method="POST">
-                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                  <button class="order_style order_now" type="submit">
-                    바로 구매
-                  </button>
-                </form>
-              </div>
-              <% } %>
             </div>
+            <% if (isLoggedIn) { %>
+            <div class="content__order_type">
+              <form class="cart_post order_post" action="/cart" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="productID" value="<%= product._id %>">
+                <button class="order_style order_cart" type="submit">
+                  장바구니 담기
+                </button>
+              </form>
+              <form class="buy_post order_post" action="/order-create" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="order_style order_now" type="submit">
+                  바로 구매
+                </button>
+              </form>
+            </div>
+            <% } else { %>
+            <div class="content__order_type">
+              <form class="cart_post order_post" action="/login" method="GET">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="productID" value="<%= product._id %>">
+                <button class="order_style order_cart" type="submit">
+                  장바구니 담기
+                </button>
+              </form>
+              <form class="buy_post order_post" action="/order-create" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="order_style order_now" type="submit">
+                  바로 구매
+                </button>
+              </form>
+            </div>
+            <% } %>
           </div>
         </div>
       </section>

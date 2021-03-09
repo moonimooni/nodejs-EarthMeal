@@ -1,11 +1,12 @@
-const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { validationResult } = require('express-validator');
 
-const User = require('../models/user');
-const Admin = require('../models/admin');
+// const User = require('../models/user');
+// const Admin = require('../models/admin');
+
+const { Admin, User } = require('../models/database');
 
 ///////////////nodemailer////////////////
 const transport = nodemailer.createTransport({
@@ -46,7 +47,7 @@ exports.postLogin = (req, res, next) => {
   const password = req.body.password;
 
   Admin
-    .findOne({ email: email })
+    .findOne({ where: { email: email } })
     .then(user => {
       if (!user) {
         console.log('일반 사용자로 패스');
@@ -73,8 +74,8 @@ exports.postLogin = (req, res, next) => {
       return next(error);
     });
 
-  User
-    .findOne({ email: email })
+  return User
+    .findOne({ where: { email: email } })
     .then(user => {
       if (!user) {
         req.flash('error', '이메일 또는 비밀번호 오류입니다');
@@ -229,7 +230,7 @@ exports.postFindPwd = (req, res, next) => {
     token = buffer.toString('hex');
   });
   User
-    .findOne({ email: req.body.email })
+    .findOne({ where: { email: req.body.email } })
     .then(user => {
       if (!user) {
         req.flash('error', '존재하지 않는 사용자입니다.');
@@ -271,10 +272,14 @@ exports.getResetPwd = (req, res, next) => {
   const token = req.params.token;
 
   User
-    .findOne({
-      resetToken: token,
-      resetTokenExp: { $gt: Date.now() }
-    })
+    .findOne(
+      {
+        where: {
+          resetToken: token,
+          resetTokenExp: { $gt: Date.now() }
+        }
+      }
+    )
     .then(user => {
       res.render('auth/reset-pwd', {
         docTitle: '어스밀',

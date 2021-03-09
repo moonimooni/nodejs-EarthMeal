@@ -2,8 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const PDFDoc = require('pdfkit')
 
-const Product = require('../models/product');
-const Order = require('../models/order');
+const { Product, Order } = require('../models/database');
+
+// const Product = require('../models/product');
+// const Order = require('../models/order');
 
 exports.getIndex = (req, res, next) => {
   return res.render('shop/index', {
@@ -14,10 +16,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   return Product
-    .find()
-    // .select('name price imgUrl -_id')
-    // or
-    // .populate('userId', 'name')
+    .findAll()
     .then(products => {
       return res.render('shop/product-list', {
         products: products,
@@ -35,7 +34,7 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
   const productID = req.params.id;
   return Product
-    .findById(productID)
+    .findByPk(productID)
     .then(product => {
       return res.render('shop/product-detail', {
         product: product,
@@ -47,12 +46,11 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
-  //if just wanna use req.session.user, 
-  //instaed of implementing req.user to every request,
-  //use req.session.user = new User().init(req.session.user);
   return req.user
-    .populate('cart.items.productId')
-    .execPopulate()
+    .getCart()
+    .then(cart => {
+      return cart.getProducts();
+    })
     .then(user => {
       let products;
       if (!user.cart.items) products = [];

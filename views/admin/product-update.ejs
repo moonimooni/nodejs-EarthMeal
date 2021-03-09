@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs') %>
+<!-- <%- include('../includes/head.ejs') %>
 <link rel="stylesheet" href="/css/product-add.css">
 </head>
 
@@ -26,17 +26,11 @@
               <div class="error"><%= errorMessage[index].msg %></div>
             <% } %>
           </div>
-          <!-- <div class="input_wrapper input_img">
-            <label for="img">이미지 링크</label>
-            <input id="img" class="input <%= errorMessage.find(e => e.param === 'img') ? 'invalid' : '' %>" type="text" name="img" value="<% if (editing || product) { %><%= product.img %><% } %>" />
-            <% if (errorMessage.find(i => i.param === 'img')) { %>
-              <% let index = errorMessage.findIndex(i => i.param === 'img') %>
-              <div class="error"><%= errorMessage[index].msg %></div>
-            <% } %>
-          </div> -->
           <div class="input_wrapper input_img">
-            <label for="img">이미지</label>
+            <label for="img">대표 이미지</label>
             <input id="img" type="file" name="img" />
+            <label for="desc_img">내용 이미지</label>
+            <input id="desc_img" type="file" name="desc_img" />
             <% if (uploadError) { %>
               <div class="error"><%= uploadError.msg %></div>
             <% } %>
@@ -60,4 +54,133 @@
           <input class="submit" type="submit" value="등록하기">
         </form>
       </div>
-    <%- include('../includes/end.ejs') %>
+    <%- include('../includes/end.ejs') %> -->
+    
+    <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product-detail.css">
+    </head>
+    
+    <body>
+      <%- include('../includes/nav.ejs') %>
+      <main>
+        <div id="content">
+          <section class="content__section">
+            <div class="content__imgs">
+              <img class="main_img" src="<%= product.imgUrl %>" alt="<%= product.name %>">
+              <div class="content__side_img">
+    
+              </div>
+            </div>
+            <div class="content__info">
+              <div class="content__price">
+                <div class="content__basic_info">
+                  <h3 class="content__name">
+                    <%= product.name %>
+                  </h3>
+                  <div class="content__reception">
+                    <p class="content__rating">
+                      평점 4.7 / 5.0
+                    </p>
+                    <p class="content__reviews">
+                      <a href="">리뷰 보러 가기</a>
+                    </p>
+                  </div>
+                  <p class="content__description">
+                    <%= product.description %>
+                  </p>
+                </div>
+                <div class="content__price_info">
+                  <p class="content__dc">
+                    10%
+                  </p>
+                  <div class="content__dc_info">
+                    <span class="content__dc_price">
+                      <%= Math.floor(product.price) %>
+                      <span class="won">
+                        원
+                      </span>
+                    </span>
+                    <span class="content__real_price">
+                      <%= Math.floor(product.price * 1.1) %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="content__detail">
+                <dl>
+                  <dt>중량</dt>
+                  <dd>310g</dd>
+                </dl>
+                <dl>
+                  <dt>보관방법</dt>
+                  <dd>냉동보관</dd>
+                </dl>
+                <dl>
+                  <dt>원산지</dt>
+                  <dd>국산</dd>
+                </dl>
+                <dl>
+                  <dt>알레르기 정보</dt>
+                  <dd>대두, 밀</dd>
+                </dl>
+              </div>
+              <div class="content__order">
+                <div class="order_qty">
+                  <input class="order_howmany" type="number" name="buy" placeholder="1" />
+                  개
+                  <span class="total_price"><%= Math.floor(product.price) %>원</span>
+                </div>
+                <% if (isLoggedIn) { %>
+                <div class="content__order_type">
+                  <form class="cart_post order_post" action="/cart" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="productID" value="<%= product._id %>">
+                    <button class="order_style order_cart" type="submit">
+                      장바구니 담기
+                    </button>
+                  </form>
+                  <form class="buy_post order_post" action="/order-create" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="order_style order_now" type="submit">
+                      바로 구매
+                    </button>
+                  </form>
+                </div>
+                <% } else { %>
+                <div class="content__order_type">
+                  <form class="cart_post order_post" action="/login" method="GET">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="productID" value="<%= product._id %>">
+                    <button class="order_style order_cart" type="submit">
+                      장바구니 담기
+                    </button>
+                  </form>
+                  <form class="buy_post order_post" action="/order-create" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="order_style order_now" type="submit">
+                      바로 구매
+                    </button>
+                  </form>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </section>
+          <section class="recommend">
+    
+          </section>
+          <section class="prod_info">
+            <nav class="prod_info__nav">
+              <ul>
+                <li>상품설명</li>
+                <li>고객후기</li>
+                <li>상품문의</li>
+                <li>상세정보</li>
+              </ul>
+            </nav>
+            <div class="prod_info__detail">
+    
+            </div>
+          </section>
+        </div>
+      </main>
